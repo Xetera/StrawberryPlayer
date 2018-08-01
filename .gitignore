@@ -101,3 +101,5 @@ target/
 \.idea/
 
 *.m4a
+
+server/test/\.pytest_cache/
