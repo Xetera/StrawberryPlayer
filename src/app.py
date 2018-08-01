@@ -1,6 +1,8 @@
 import asyncio
 import websockets
 import youtube_dl
+import os
+
 
 ytdl_opts = {
     'format': 'bestaudio/best',
@@ -30,7 +32,10 @@ async def hello(websocket, path):
     print(f"> {greeting}")
 
 
-start_server = websockets.serve(hello, 'localhost', 10000)
-
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+if __name__ == '__main__':
+    server = os.environ.get('IP_ADDRESS', 'localhost')
+    port = 10000
+    print(f'Starting server at {server}:{port}')
+    start_server = websockets.serve(hello, server, port)
+    asyncio.get_event_loop().run_until_complete(start_server)
+    asyncio.get_event_loop().run_forever()
