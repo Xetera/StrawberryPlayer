@@ -2,7 +2,7 @@ import asyncio
 import websockets
 import youtube_dl
 import os
-
+import json
 
 ytdl_opts = {
     'format': 'bestaudio/best',
@@ -10,8 +10,7 @@ ytdl_opts = {
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'mp3',
         'preferredquality': '140'
-    }],
-    '--default-search': 'ytseach'
+    }]
 }
 
 
@@ -19,8 +18,9 @@ async def hello(websocket, path):
     song = await websocket.recv()
 
     with youtube_dl.YoutubeDL(ytdl_opts) as ytdl:
-        something = ytdl.download([f'ytsearch:{song}'])
+        something = ytdl.extract_info(f'ytsearch:{song}', download=False)
         print(something)
+        await websocket.send(json.dumps(something))
         # result = ytdl.extract_info(song, download=False)
         # video = None
         # if 'entries' in result:
