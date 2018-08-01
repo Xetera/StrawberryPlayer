@@ -2,7 +2,10 @@ import asyncio
 import websockets
 import youtube_dl
 import os
-import json
+
+from utils.logging import logger
+from youtube import download
+from utils.packet import stringify
 
 ytdl_opts = {
     'format': 'bestaudio/best',
@@ -15,12 +18,12 @@ ytdl_opts = {
 
 
 async def hello(websocket, path):
+    print(path)
     song = await websocket.recv()
 
     with youtube_dl.YoutubeDL(ytdl_opts) as ytdl:
-        something = ytdl.extract_info(f'ytsearch:{song}', download=False)
-        print(something)
-        await websocket.send(json.dumps(something))
+        something = await download.fetch_info(ytdl, song)
+        await websocket.send(stringify(something))
         # result = ytdl.extract_info(song, download=False)
         # video = None
         # if 'entries' in result:
@@ -29,13 +32,12 @@ async def hello(websocket, path):
         #     video = result
         # video_url =
 
-    print(f"> {greeting}")
 
 
 if __name__ == '__main__':
     server = os.environ.get('IP_ADDRESS', 'localhost')
     port = 10000
-    print(f'Starting server at {server}:{port}')
+    logger.info('Starting server at {server}:{port}')
     start_server = websockets.serve(hello, server, port)
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()
