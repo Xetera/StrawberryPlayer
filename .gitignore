@@ -1,6 +1,6 @@
 # Byte-compiled / optimized / DLL files
 _# See http://help.github.com/ignore-files/ for more about ignoring files.
-
+*.mp3
 # compiled output
 /dist
 /tmp
@@ -91,6 +91,9 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+
+# PyTest
+server/.pytest_cache
 
 # PyBuilder
 target/
