@@ -1,5 +1,5 @@
 import pytest
-from ..utils.packet import stringify
+from utils.packet import stringify
 
 
 def test_stringify():
