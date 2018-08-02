@@ -1,3 +1,4 @@
 youtube_dl>=2018.7.29
 python-vlc>=3.0
 websockets>=5.0.1
+python-dotenv>=0.9.0
