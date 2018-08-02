@@ -8,6 +8,6 @@ async def dispatch(websocket, packet: Union[str, dict, Packet]) -> None:
     return await websocket.send(packet.serialize())
 
 
-def receive(websocket) -> Packet:
-    pack = websocket.recv()
+async def receive(websocket) -> Packet:
+    pack = await websocket.recv()
     return Packet(pack)
