@@ -3,7 +3,7 @@ import os
 
 
 def create_logger():
-    format = '%(asctime)-15s [%(levelname)s]: %(message)s'
+    format = '%(asctime)-s [%(levelname)s]: %(message)s'
 
     fh = logging.FileHandler('server.log')
     fh.setLevel('DEBUG')
@@ -11,7 +11,10 @@ def create_logger():
     ch = logging.StreamHandler()
     ch.setLevel('ERROR')
     formatter = logging.Formatter(format)
-    logging.basicConfig(format=format)
+    logging.basicConfig(
+        format=format,
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
     fh.setFormatter(formatter)
     ch.setFormatter(formatter)
 
