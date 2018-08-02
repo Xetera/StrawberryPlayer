@@ -28,7 +28,7 @@ class Packet:
             packet = json.loads(incoming)
             self.header: str = packet['header']
             self.body: Union[str, list] = packet['body']
-
+            self.user: str = packet.get('user')
             logger.debug(f'Created a new packet with size {len(self.body)}')
         except (TypeError, IndexError) as e:
             logger.error(e)
