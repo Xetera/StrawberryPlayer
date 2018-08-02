@@ -21,8 +21,8 @@ def create_logger():
     out = logging.getLogger('StrawberryServer')
 
     log_level = os.environ.get('STRAWBERRY_LOG_LEVEL', 'INFO')
-    if log_level not in ['DEBUG', 'INFO', 'WARNING', ]:
-        raise EnvironmentError("STRAWBERRY_LOG_LEVEL environment set but is not valid")
+    if log_level not in ['DEBUG', 'INFO', 'WARNING', 'ERROR']:
+        log_level = 'INFO'
 
     out.setLevel(log_level)
     out.addHandler(fh)
