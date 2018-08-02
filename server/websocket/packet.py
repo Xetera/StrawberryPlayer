@@ -53,13 +53,3 @@ class Packet:
     def __eq__(self, other):
         return self.serialize() == other.serialize()
 
-
-async def dispatch(websocket, packet: Union[str, dict, Packet]) -> None:
-    if isinstance(packet, str):
-        return await websocket.send(packet)
-    return await websocket.send(packet.serialize())
-
-
-def receive(websocket) -> Packet:
-    pack = websocket.recv()
-    return Packet(pack)
