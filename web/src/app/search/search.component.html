@@ -1,0 +1,10 @@
+<input
+    type="text"
+    class="search-bar"
+    (focus)="clearText()"
+    (change)="checkPlaceholder()"
+    [(ngModel)]="input"
+    (focusout)="checkPlaceholder()"
+    [ngClass]="isPlaceholder ? 'placeholder-text': ''"
+    (keydown)="onKeydown($event)"
+>
