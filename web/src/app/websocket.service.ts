@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import Hashids from 'hashids';
-import websocketConnect, {Connection, IWebSocket} from 'rxjs-websockets';
+import websocketConnect from 'rxjs-websockets';
 import {QueueingSubject} from 'queueing-subject';
 import {Observable} from 'rxjs';
-import {shallowEqualArrays} from '@angular/router/src/utils/collection';
 
 @Injectable({
     providedIn: 'root'
@@ -38,7 +37,7 @@ export class WebsocketService {
     private handleEvent(packet: MessageEvent) {
     }
 
-    public emitSearch = (search: string) => this.dispatch('download', search);
+    public search = (search: string) => this.dispatch('download', search);
 
 
 

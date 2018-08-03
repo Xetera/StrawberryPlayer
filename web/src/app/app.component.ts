@@ -10,7 +10,6 @@ import {WebsocketService} from './websocket.service';
 export class AppComponent {
     title = 'strawberry-player-web';
     constructor(private client: WebsocketService) {
-        console.log('emitting something')
-        client.emitSearch('Paralyzer Finger Eleven');
+        // client.emitSearch('Paralyzer Finger Eleven');
     }
 }
