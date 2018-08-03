@@ -1,5 +1,6 @@
 import youtube_dl
 from datetime import datetime
+import hashlib
 
 from config import get_save_location
 from player.player import add_song
@@ -25,15 +26,14 @@ async def fetch_info(client: youtube_dl.YoutubeDL, song: str, ip: str = 'unknown
     return info
 
 
-async def download_song(client: youtube_dl.YoutubeDL, song: str, ip: str = 'unknown user') -> dict:
+async def download_song(client: youtube_dl.YoutubeDL, song: str, ip: str = 'unknown user'):
     logger.info(f'Downloading song {song} at {get_save_location()} by {ip}')
 
     start = datetime.now()
-    file = client.extract_info(f'ytsearch:{song}')
+    try:
+        client.download([f'ytsearch:{song}'])
+    except PermissionError:
+        pass
     delta = datetime.now() - start
 
-    parsed_file = extract_file_metadata(file)
-    print(parsed_file)
-    logger.info(f'Downloaded "{song}" in {delta.seconds} seconds')
-    logger.info(f'Adding {song} to playlist')
-    return file
+    logger.info(f'Downloaded in {delta.seconds} seconds')

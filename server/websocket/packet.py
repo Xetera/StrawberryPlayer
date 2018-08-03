@@ -10,13 +10,13 @@ class Packet:
     """
     def __init__(self, incoming: Optional[str] = None, **kwargs):
         if isinstance(incoming, Packet):
-            self.header = incoming.header
+            self.event = incoming.event
             self.body = incoming.body
             self.user = incoming.user
             return
 
-        elif 'body' in kwargs and 'header' in kwargs:
-            self.header = kwargs.get('header')
+        elif 'body' in kwargs and 'event' in kwargs:
+            self.event = kwargs.get('event')
             self.body = kwargs.get('body')
             self.user = kwargs.get('user')
             return
@@ -26,7 +26,7 @@ class Packet:
                 raise ReferenceError("Message body is empty.")
 
             packet = json.loads(incoming)
-            self.header: str = packet['header']
+            self.event: str = packet['event']
             self.body: Union[str, list] = packet['body']
             self.user: str = packet.get('user')
             logger.debug(f'Created a new packet with size {len(self.body)}')
@@ -36,14 +36,14 @@ class Packet:
 
     @property
     def is_valid(self):
-        return self.header and self.body
+        return self.event and self.body
 
     def __repr__(self):
         return self.serialize()
 
     def serialize(self) -> str:
         info = {
-            'header': self.header,
+            'event': self.event,
             'body': self.body
         }
         out = json.dumps(info)

@@ -5,7 +5,7 @@ class WebsocketRequestException(Packet):
     def __init__(self, **kwargs):
         super(
         ).__init__(
-            header=kwargs.get('header', 'error'),
+            event=kwargs.get('event', 'error'),
             body=kwargs.get('body', 'Unexpected server error'),
             user='StrawberryServer'
         )

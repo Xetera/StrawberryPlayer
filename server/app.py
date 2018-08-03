@@ -1,43 +1,50 @@
 import asyncio
 import websockets
-import youtube_dl
 import os
 
 from config import get_save_location
-from player.player import add_song
 from utils.logging import logger
-from youtube import download
+from websocket.exception import WebsocketRequestException
 from websocket.packet import Packet
-from websocket.connection import dispatch, receive
+from websocket.connection import dispatch, receive, clients
 import config
+from websocket.events import on_download, on_search, on_pause, on_play, on_skip
 
 
-async def handler(websocket: websockets, path):
-    # if not isinstance(websocket.recv(), str):
-    #     return
+async def handler(websocket: websockets.WebSocketCommonProtocol, path):
+    # A copy of this callback is ran for each individual connection
+    while not websocket.closed:
+        packet: Packet = await receive(websocket)
 
-    packet: Packet = await receive(websocket)
+        logger.info(f'Received a {packet.event} request from {packet.user}')
+        event_params = (websocket, packet)
 
-    if packet.header not in config.valid_requests:
-        return logger.error(f'Received unrecognized request')
-
-    logger.info(f'Received a {packet.header} request from {packet.user}')
-    if packet.header == 'download':
-        with youtube_dl.YoutubeDL(config.ytdl_opts) as ytdl:
-            file = await download.download_song(ytdl, packet.body, packet.user)
-    elif packet.header == 'search':
-        with youtube_dl.YoutubeDL(config.ytdl_opts) as ytdl:
-            info = await download.fetch_info(ytdl, packet.body)
-            response = Packet(header=packet.header, body=info)
-            await dispatch(websocket, response)
+        if packet.event == 'download':
+            await on_download(*event_params)
+        elif packet.event == 'search':
+            await on_search(*event_params)
+        elif packet.event == 'pause':
+            await on_pause(*event_params)
+        elif packet.event == 'play':
+            await on_play(*event_params)
+        elif packet.event == 'skip':
+            await on_skip(*event_params)
+        else:
+            logger.error(f'Received unrecognized request')
+            error = WebsocketRequestException(
+                event=packet.event,
+                body='Invalid request'
+            )
+            return await dispatch(websocket, error)
 
 
 if __name__ == '__main__':
-    server = os.environ.get('IP_ADDRESS', 'localhost')
-    port = 10000
-    logger.info(f'Starting server at {server}:{port}')
+    ip = os.environ.get('IP_ADDRESS', 'localhost')
+    port = os.environ.get('PORT', '100000')
+
+    logger.info(f'Starting server at {ip}:{port}')
     logger.info(f'Saving media at {get_save_location()}')
 
-    start_server = websockets.serve(handler, server, port)
-    asyncio.get_event_loop().run_until_complete(start_server)
+    server = websockets.serve(handler, ip, port)
+    asyncio.get_event_loop().run_until_complete(server)
     asyncio.get_event_loop().run_forever()
