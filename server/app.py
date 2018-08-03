@@ -6,36 +6,39 @@ from config import get_save_location
 from utils.logging import logger
 from websocket.exception import WebsocketRequestException
 from websocket.packet import Packet
-from websocket.connection import dispatch, receive, clients
-import config
+from websocket.connection import dispatch, receive, register_client, unregister_client
 from websocket.events import on_download, on_search, on_pause, on_play, on_skip
 
 
 async def handler(websocket: websockets.WebSocketCommonProtocol, path):
     # A copy of this callback is ran for each individual connection
+    register_client(websocket)
     while not websocket.closed:
-        packet: Packet = await receive(websocket)
+        try:
+            packet: Packet = await receive(websocket)
 
-        logger.info(f'Received a {packet.event} request from {packet.user}')
-        event_params = (websocket, packet)
+            logger.info(f'Received a {packet.event} request from {packet.user}')
+            event_params = (websocket, packet)
 
-        if packet.event == 'download':
-            await on_download(*event_params)
-        elif packet.event == 'search':
-            await on_search(*event_params)
-        elif packet.event == 'pause':
-            await on_pause(*event_params)
-        elif packet.event == 'play':
-            await on_play(*event_params)
-        elif packet.event == 'skip':
-            await on_skip(*event_params)
-        else:
-            logger.error(f'Received unrecognized request')
-            error = WebsocketRequestException(
-                event=packet.event,
-                body='Invalid request'
-            )
-            return await dispatch(websocket, error)
+            if packet.event == 'download':
+                await on_download(*event_params)
+            elif packet.event == 'search':
+                await on_search(*event_params)
+            elif packet.event == 'pause':
+                await on_pause(*event_params)
+            elif packet.event == 'play':
+                await on_play(*event_params)
+            elif packet.event == 'skip':
+                await on_skip(*event_params)
+            else:
+                logger.error(f'Received unrecognized request')
+                error = WebsocketRequestException(
+                    event=packet.event,
+                    body='Invalid request'
+                )
+                return await dispatch(websocket, error)
+        except websockets.ConnectionClosed:
+            unregister_client(websocket)
 
 
 if __name__ == '__main__':
