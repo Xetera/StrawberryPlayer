@@ -1,6 +1,8 @@
 from typing import Union
 from websocket.packet import Packet
 
+clients = {}
+
 
 async def dispatch(websocket, packet: Union[str, dict, Packet]) -> None:
     if isinstance(packet, str):
