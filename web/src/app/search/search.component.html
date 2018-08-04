@@ -6,6 +6,7 @@
     (change)="checkPlaceholder()"
     [(ngModel)]="input"
     (focusout)="checkPlaceholder()"
-    [ngClass]="isPlaceholder ? 'placeholder-text': ''"
+    [ngClass]="fetchStatus()"
     (keydown)="onKeydown($event)"
+    [disabled]="!socket.connected"
 />

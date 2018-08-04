@@ -4,8 +4,7 @@ import {WebsocketService} from '../websocket.service';
 @Component({
     selector: 'app-search',
     templateUrl: './search.component.html',
-    styleUrls: ['./search.component.css'],
-    providers: [WebsocketService],
+    styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit {
     private placeholders: string[] = [
@@ -13,7 +12,6 @@ export class SearchComponent implements OnInit {
     ];
     public input: string;
     public isPlaceholder = true;
-
     constructor(public socket: WebsocketService) {
         this.checkPlaceholder();
     }
@@ -21,8 +19,11 @@ export class SearchComponent implements OnInit {
     public checkPlaceholder = () => {
         if (!this.input) {
             this.isPlaceholder = true;
-            this.input = `Search for a song you ${this.placeholders[Math.floor(Math.random() * this.placeholders.length)]}`;
         }
+        this.input = this.getRandomPlaceholder();
+    }
+    public getRandomPlaceholder = () => {
+        return `Search for a song you ${this.placeholders[Math.floor(Math.random() * this.placeholders.length)]}`;
     }
 
     public clearText() {
@@ -36,6 +37,23 @@ export class SearchComponent implements OnInit {
     public onKeydown = (event: KeyboardEvent) => {
         if (event.key === 'Enter') {
             this.socket.search(this.input);
+        }
+    }
+    private handleConnection = () => {
+        this.socket.connection.subscribe(online => {
+            if (online) {
+                this.input = this.getRandomPlaceholder();
+            } else {
+                this.input = 'Server Unreachable!';
+            }
+        });
+    }
+
+    public fetchStatus = () => {
+        if (this.socket.sock.readyState !== 1) {
+            return ['unavailable-service', 'placeholder-text', 'warning-box'];
+        } else if (this.isPlaceholder) {
+            return 'placeholder-text';
         }
     }
 }

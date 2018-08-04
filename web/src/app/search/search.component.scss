@@ -1,17 +1,19 @@
+@import "../shared";
+
 .search-bar {
+    @extend .component;
     height: 10%;
     text-align: center;
     width: 80%;
-    display: flex;
-    justify-content: center;
     background-color: mintcream;
-    margin-left: auto;
-    margin-right: auto;
     margin-top: 5%;
     font-size: 3rem;
-    padding: 1%;
+    box-shadow: 2px 5px 24px;
+    outline: 0px;
+    border-radius: 15px;
 }
 
 .placeholder-text {
     color: gray;
 }
+
