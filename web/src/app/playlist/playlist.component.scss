@@ -1,0 +1,10 @@
+@import "../shared";
+
+.playlist-item {
+    @extend .component;
+    height: 10%;
+    width: 80%;
+    background-color: mintcream;
+    margin-top: 5%;
+    font-size: 3rem;
+}
