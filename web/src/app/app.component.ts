@@ -1,15 +1,12 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {WebsocketService} from './websocket.service';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css'],
-    providers: [WebsocketService]
+    styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-    title = 'strawberry-player-web';
-    constructor(private client: WebsocketService) {
-        // client.emitSearch('Paralyzer Finger Eleven');
-    }
+export class AppComponent implements OnInit {
+    constructor(public socket: WebsocketService) { }
+    ngOnInit() { }
 }

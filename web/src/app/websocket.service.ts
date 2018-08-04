@@ -36,7 +36,6 @@ export class WebsocketService {
 
     private registerHandlers = () => {
         this.outgoing$.subscribe(packet => {
-            console.log('sending packet');
             const serialized = JSON.stringify(packet);
             this.sock.send(serialized);
         });
@@ -70,6 +69,5 @@ export class WebsocketService {
     }
 
     public search = (search: string) => this.dispatch('download', search);
-
-
+    public generateId = () => '_' + Math.random().toString(36).substr(2, 9);
 }
