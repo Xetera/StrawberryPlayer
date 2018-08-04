@@ -1,0 +1,11 @@
+@import '../shared';
+
+.player {
+    @extend .component;
+    margin-top: 10%;
+}
+
+.back-button {
+    @extend .button, .component;
+    background-color: red;
+}
