@@ -7,6 +7,7 @@
 </div>
 <hr>
 
+<img src="https://i.imgur.com/NvxJiYJ.gif" align="center">
 
 A **WIP** server designed for raspberry pi for streaming music to bluetooth devices directly through Wi-Fi with a web interface
 
