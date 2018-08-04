@@ -87,12 +87,11 @@ export class OverlayComponent implements OnInit, OnDestroy {
         const background = new PIXI.Graphics();
 
         background.beginFill(0x1099bb);
-        background.lineStyle(5, 0xFF0000);
         background.drawRect(0, 0, this.render.screen.width, this.render.screen.height);
-        const strawberry = PIXI.Sprite.from('assets/strawberry.png');
-        strawberry.anchor.set(0.6);
+        const strawberry = PIXI.Sprite.from('assets/strawberry_stroke.png');
+        strawberry.anchor.set(0.55);
         const style = new PIXI.TextStyle({
-            fill: '#ef0f01',
+            fill: '#fcfff2',
             fontFamily: '"Trebuchet MS", Helvetica, sans-serif',
             fontSize: 72,
             fontVariant: 'small-caps',
@@ -123,7 +122,7 @@ export class OverlayComponent implements OnInit, OnDestroy {
             fontSize: 36,
             fontWeight: 'lighter',
         });
-        const smallTextLabel = 'Check to see if the server is on.';
+        const smallTextLabel = 'Make sure it\'s actually running.';
         const smallText: PIXI.Text = new PIXI.Text(smallTextLabel, smallTextStyle);
         smallText.y = this.render.screen.height / 1.1;
         smallText.name = 'smallText';
