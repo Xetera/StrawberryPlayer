@@ -1,0 +1,6 @@
+@import '../shared';
+
+.status-bar {
+    @extend .component;
+    width: 30%;
+}
