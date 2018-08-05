@@ -5,6 +5,7 @@ install:
   - pip install -r server/requirements.txt
   - pip install -r server/test/test_requirements.txt
 script:
-  - python -m pytest --rootDir=server/test
+  - cd server/test
+  - python -m pytest
 env:
   - STRAWBERRY_PLAYER_HOST=Travis
