@@ -1,0 +1,9 @@
+.*
+Dockerfile
+!.env
+server/music
+server/test
+web/dist
+web/e2e
+docker-compose.yml
+*.md
