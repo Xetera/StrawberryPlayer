@@ -10,6 +10,7 @@ import { PlaylistComponent } from './playlist/playlist.component';
 import { PlayerComponent } from './player/player.component';
 import { StatusComponent } from './status/status.component';
 import { OverlayComponent } from './overlay/overlay.component';
+import { SecondsToDatePipe } from './seconds-to-date.pipe';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,8 @@ import { OverlayComponent } from './overlay/overlay.component';
         PlaylistComponent,
         PlayerComponent,
         StatusComponent,
-        OverlayComponent
+        OverlayComponent,
+        SecondsToDatePipe
     ],
     imports: [
         BrowserModule,
