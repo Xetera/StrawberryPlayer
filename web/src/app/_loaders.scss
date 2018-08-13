@@ -1,0 +1,43 @@
+$hollowBoxSize: 1.4em;
+$hollowLight: #ec4744;
+$hollowDark: #ffffff;
+$hollowTiming: 0.55s;
+
+.hollow-loader {
+    width: $hollowBoxSize;
+    height: $hollowBoxSize;
+    animation: loader-anim $hollowTiming infinite ease-in-out;
+    outline: 1px solid transparent;
+    .large-box {
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        height: $hollowBoxSize;
+        width: $hollowBoxSize;
+        background-color: $hollowLight;
+        outline: 1px solid transparent;
+        position: fixed;
+    }
+    .small-box {
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+        height: $hollowBoxSize;
+        width: $hollowBoxSize;
+        background-color: $hollowDark;
+        position: fixed;
+        z-index: 1;
+        outline: 1px solid transparent;
+        animation: small-box-anim $hollowTiming alternate infinite ease-in-out;
+    }
+}
+
+@keyframes small-box-anim {
+    0% {transform: scale(0.2);}
+    100% {transform: scale(0.75);}
+}
+
+@keyframes loader-anim {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(90deg);}
+}
