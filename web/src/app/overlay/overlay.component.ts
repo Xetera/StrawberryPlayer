@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {WebsocketService} from '../websocket.service';
 
 import * as PIXI from 'pixi.js/dist/pixi.js';
-import Timer = NodeJS.Timer;
 
 @Component({
     selector: 'app-overlay',
@@ -12,7 +11,7 @@ import Timer = NodeJS.Timer;
 export class OverlayComponent implements OnInit, OnDestroy {
     public render: PIXI.Application;
     private elements: PIXI.Container;
-    private timer?: Timer;
+    private timer?: any;
     private smallTexts: string[] = [
         'Are we even live?',
         'Kinda getting lonely in here...',
@@ -28,7 +27,6 @@ export class OverlayComponent implements OnInit, OnDestroy {
 
     constructor(public socket: WebsocketService) {
         this.socket.connection.subscribe(async online => {
-            console.log(online);
             if (this.timer) {
                 clearInterval(this.timer);
             }
