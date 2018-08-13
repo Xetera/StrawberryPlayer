@@ -1,6 +1,7 @@
+@import "shared";
 $hollowBoxSize: 1.4em;
-$hollowLight: #ec4744;
-$hollowDark: #ffffff;
+$hollowLight: $green;
+$hollowDark: $red;
 $hollowTiming: 0.55s;
 
 .hollow-loader {
