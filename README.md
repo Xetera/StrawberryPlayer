@@ -30,3 +30,4 @@ A **WIP** server designed for raspberry pi for streaming music to bluetooth devi
 - [ ] Playlist queueing
 - [ ] Track download progress 
 - [ ] Login system with NoSQL
+- [ ] Retaining old, downloaded playlists on startup
