@@ -2,7 +2,42 @@
 
 .player {
     @extend .component;
+    width: 3vw;
     margin-top: 10%;
+    bottom: 0;
+}
+
+.media-button {
+    top: 0;
+    background-color: $red;
+    -webkit-border-radius: 5rem;
+    -moz-border-radius: 5rem;
+    border-radius: 5rem;
+    height: 6rem;
+    width: 6rem;
+    img {
+        transform: translateY(10%) translateX(10%);
+        max-height: 5rem;
+    }
+}
+
+.small-media-button {
+    @extend .media-button;
+    height: 4rem;
+    width: 4rem;
+    img {
+        -webkit-transform: translateY(15%);
+        -moz-transform: translateY(15%);
+        -ms-transform: translateY(15%);
+        -o-transform: translateY(15%);
+        transform: translateY(15%);
+        max-height: 3rem;
+    }
+}
+
+.media-button-container {
+    display:flex;
+    align-items: baseline;
 }
 
 .back-button {

@@ -2,12 +2,17 @@
 
 .search-bar {
     @extend .component;
-    height: 10%;
+    @media screen and (min-width: 661px) {
+        font-size: 30px;
+    }
+    height: 5%;
     text-align: center;
     width: 80%;
     background-color: mintcream;
-    margin-top: 5%;
-    font-size: 3rem;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    font-size: 4vw;
+    max-font-size: 6px;
     box-shadow: 2px 5px 24px;
     outline: 0px;
     border-radius: 15px;

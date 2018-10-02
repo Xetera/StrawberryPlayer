@@ -8,6 +8,7 @@ class Packet:
     Serializable object for sending and receiving messages
     from the client
     """
+
     def __init__(self, incoming: Optional[str] = None, **kwargs):
         if isinstance(incoming, Packet):
             self.event = incoming.event
@@ -27,7 +28,12 @@ class Packet:
 
             packet = json.loads(incoming)
             self.event: str = packet['event']
-            self.body: Union[str, list] = packet['body']
+
+            try:
+                self.body: Union[str, list] = json.loads(packet['body'])
+            except ValueError:
+                self.body: Union[str, list] = packet['body']
+
             self.user: str = packet.get('user')
             logger.debug(f'Created a new packet with size {len(self.body)}')
         except (TypeError, IndexError) as e:
@@ -46,10 +52,19 @@ class Packet:
             'event': self.event,
             'body': self.body
         }
+        if isinstance(self.body, dict):
+            info['body'] = json.dumps(self.body)
+
         out = json.dumps(info)
         logger.debug(f'Serialized an object to size {len(out)}')
         return out
 
+    def get(self, attr: str):
+        """Fetches values from body"""
+        print(self.body)
+        if isinstance(self.body, dict):
+            return self.body[attr]
+        return self.body
+
     def __eq__(self, other):
         return self.serialize() == other.serialize()
-

@@ -1,3 +1,4 @@
+import asyncio
 import youtube_dl
 from datetime import datetime
 import hashlib
@@ -5,10 +6,19 @@ import hashlib
 from config import get_save_location
 from player.player import add_song
 from utils.logging import logger
-from youtube.utils import extract_file_metadata
+from websocket.dispatch import send_new_song
+from youtube.utils import extract_song_metadata
 
 
-async def fetch_info(client: youtube_dl.YoutubeDL, song: str, ip: str = 'unknown user') -> dict:
+async def async_download(client, search):
+    return client.download(search)
+
+
+async def async_extract_info(client, search, download=False):
+    return client.extract_info(search, download)
+
+
+async def fetch_info(socket, client: youtube_dl.YoutubeDL, song: str, song_hash: str, ip: str = 'unknown user') -> dict:
     """
     Used for fetching only the information of a song from youtube
     :param client: YoutubeDL client
@@ -26,14 +36,30 @@ async def fetch_info(client: youtube_dl.YoutubeDL, song: str, ip: str = 'unknown
     return info
 
 
-async def download_song(client: youtube_dl.YoutubeDL, song: str, ip: str = 'unknown user'):
-    logger.info(f'Downloading song {song} at {get_save_location()} by {ip}')
-
-    start = datetime.now()
+async def download_with_info(client, search_string):
     try:
-        client.download([f'ytsearch:{song}'])
+        info = await asyncio.gather(
+            async_download(client, [search_string]),
+            async_extract_info(client, search_string, download=False)
+        )
+        return info
     except PermissionError:
         pass
+
+
+async def download_song(socket, client: youtube_dl.YoutubeDL, song: str, song_hash: str,
+                        loop: asyncio.AbstractEventLoop,
+                        ip: str = 'unknown user'):
+    logger.info(f'Downloading song {song} at {get_save_location()} by {ip}')
+
+    search_string = f'ytsearch:{song}'
+
+    start = datetime.now()
+    response = await asyncio.ensure_future(download_with_info(client, search_string))
+    metadata = extract_song_metadata(response[-1])
+
+    await send_new_song(socket, song_hash, metadata)
+
     delta = datetime.now() - start
 
     logger.info(f'Downloaded in {delta.seconds} seconds')

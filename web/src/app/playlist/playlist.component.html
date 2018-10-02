@@ -1,3 +1,22 @@
-<div *ngFor="let song of playlist" class="playlist-item">
-    {{ song.searchedName }}
+<div *ngFor="let song of songs">
+    <div class="playlist-item">
+        <div style="display: flex; align-items: center; margin: 0 auto">
+            <ng-template #download>
+                <img src="assets/download.png" class="song-status-icon">
+            </ng-template>
+            <div *ngIf="!song.title; else download" class="hollow-loader">
+                <div class="large-box"></div>
+                <div class="small-box"></div>
+            </div>
+        </div>
+        <div class="song-title">
+            <div>
+            {{ song.title || song.searchedName }}
+            </div>
+            <div *ngIf="song.duration">
+                <b>Duration</b>: {{ song.duration | secondsToDate }}
+            </div>
+        </div>
+        <img *ngIf="song.thumbnail" [src]="song.thumbnail" class="thumbnail">
+    </div>
 </div>

@@ -1,9 +1,10 @@
 import os
-
 import asyncio
 
 from player.player import add_song
 from utils.logging import logger
+
+loop = asyncio.get_event_loop()
 
 
 async def on_file_download_finish(obj: dict):
@@ -15,7 +16,6 @@ async def on_file_download_finish(obj: dict):
 
 def progress_hook(obj: dict):
     if obj['status'] == 'finished':
-        loop = asyncio.get_event_loop()
         loop.create_task(on_file_download_finish(obj))
     elif obj['status'] == 'download':
         total = obj['total_bytes']

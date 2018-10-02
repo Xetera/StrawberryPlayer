@@ -4,15 +4,13 @@ export interface Packet {
     user: string;
 }
 
-export interface IncompleteSong {
+export interface Song {
+    thumbnail?: string;
+    title?: string;
+    description?: string;
+    dateUploaded?: string;
+    duration?: number;
     searchedName: string;
-}
-
-export interface Song extends IncompleteSong {
-    thumbnail: string;
-    title: string;
-    dateUploaded: string;
-    length: number;
 }
 
 export const isSong = (obj: any): obj is Song => {

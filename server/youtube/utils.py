@@ -1,6 +1,6 @@
 import string
 
-def extract_file_metadata(ytdl_response: dict) -> dict:
+def extract_song_metadata(ytdl_response: dict) -> dict:
     entries = ytdl_response['entries']
     if ytdl_response['_type'] == 'playlist':
         return entries[0]

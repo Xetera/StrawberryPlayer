@@ -1,12 +1,16 @@
 <div class="player">
-    Now Playing:
-    <span class="button" #back>
+    <div class="media-button-container">
+        <span class="small-media-button" #back>
+            <img src="assets/skip-to-start.png" alt="">
+        </span>
+        <span class="media-button" (click)="togglePlay()" #pause>
+            <img [src]="playButtonSrc" alt="" >
+        </span>
+        <span class="small-media-button" #next>
+            <img src="assets/end.png" alt="">
+        </span>
+    </div>
+    <div class="player-body">
 
-    </span>
-    <span class="button" #pause>
-
-    </span>
-    <span class="button" #next>
-
-    </span>
+    </div>
 </div>

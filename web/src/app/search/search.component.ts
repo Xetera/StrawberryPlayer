@@ -1,5 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {WebsocketService} from '../websocket.service';
+import {Packet} from '../interfaces';
 
 @Component({
     selector: 'app-search',
@@ -12,6 +13,7 @@ export class SearchComponent implements OnInit {
     ];
     public input: string;
     public isPlaceholder = true;
+
     constructor(public socket: WebsocketService) {
         this.checkPlaceholder();
     }
@@ -36,9 +38,11 @@ export class SearchComponent implements OnInit {
 
     public onKeydown = (event: KeyboardEvent) => {
         if (event.key === 'Enter') {
-            this.socket.search(this.input);
+            this.search(this.input);
+            this.input = '';
         }
     }
+
     private handleConnection = () => {
         this.socket.connection.subscribe(online => {
             if (online) {
@@ -55,5 +59,10 @@ export class SearchComponent implements OnInit {
         } else if (this.isPlaceholder) {
             return 'placeholder-text';
         }
+    }
+    public search = (song: string): void => {
+        const id = this.socket.generateId();
+        this.socket.dispatch('search', {song, id});
+        this.socket.dispatch('download', {song, id});
     }
 }

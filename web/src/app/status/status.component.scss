@@ -2,5 +2,29 @@
 
 .status-bar {
     @extend .component;
+    height: 10%;
+    flex-direction: column;
+}
+
+.message-bar {
+    max-height: 15em;
+    @extend .component;
+    padding: 0;
+    flex-direction: column;
+    height: 10%;
+    background-color: indianred;
     width: 30%;
+    p {
+        padding: 0;
+        margin: 0;
+    }
+}
+
+.status-message {
+    margin: 0;
+    width: 30%;
+    height: 10%;
+    background: royalblue;
+    top: 50%;
+    transform: translateY(50%);
 }

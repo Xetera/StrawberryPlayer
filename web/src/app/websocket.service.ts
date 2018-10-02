@@ -27,11 +27,22 @@ export class WebsocketService {
         this.registerListeners();
     }
 
-    private createPacket = (event: string, body: string): Packet => ({event, body, user: this.user});
+    private createPacket = (event: string, payload: string | Object): Packet => {
+        let body;
+        if (typeof body !== 'string') {
+            body = JSON.stringify(payload);
+        } else {
+            body = payload;
+        }
+        return {
+            event, body, user: this.user
+        };
+    }
 
-    private dispatch = (event: string, body: string): void => {
+    public dispatch = (event: string, body: Object | string): Packet => {
         const packet = this.createPacket(event, body);
         this.outgoing$.next(packet);
+        return packet;
     }
 
     private registerHandlers = () => {
@@ -59,15 +70,14 @@ export class WebsocketService {
             setTimeout(() => this.registerListeners(), 4000);
             this.connection.next(false);
         };
-    }
+    };
 
     public subscribeOutgoing = () => {
         return this.outgoing$.asObservable();
-    }
+    };
 
     private handleEvent(packet: Packet) {
     }
 
-    public search = (search: string) => this.dispatch('download', search);
     public generateId = () => '_' + Math.random().toString(36).substr(2, 9);
 }

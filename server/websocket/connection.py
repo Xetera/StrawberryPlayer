@@ -11,7 +11,13 @@ socket = websockets.WebSocketCommonProtocol
 async def dispatch(websocket, packet: Union[str, dict, Packet]) -> None:
     if isinstance(packet, str):
         return await websocket.send(packet)
-    return await websocket.send(packet.serialize())
+    elif isinstance(packet, dict):
+        packet = Packet(
+            event=packet['event'],
+            body=packet['body']
+        )
+    print(packet.serialize())
+    return await websocket.send(data=packet.serialize())
 
 
 async def receive(websocket) -> Packet:
